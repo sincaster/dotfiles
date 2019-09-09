@@ -1,8 +1,0 @@
-#! /bin/sh
-choice=$(printf "lock\\nsuspend\\nshutdown\\nreboot" | dmenu -i -h "24" -p "huh?")
-case "$choice" in
-	lock) xautolock -enable && xautolock -locknow;;
-	suspend) doas pm-suspend;;
-	shutdown) doas poweroff;;
-	reboot) doas reboot;;
-esac

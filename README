@@ -2,9 +2,10 @@ notthebee's dotfiles
 --------------------
 
 Uses GNU Stow – https://www.gnu.org/software/stow/
+You can install it with your package manager. (E.g. apt, pacman, dnf, yum, GNU Guix)
 
 Usage: 
-cd ~
-git clone git://git.notthebe.ee/dotfiles
+cd **your preferred directory**
+git clone https://github.com/sincaster/dotfiles (or https://github.com/sincaster/dotfiles.git)
 cd dotfiles
-stow polybar (or i3, rofi, dmenu, etc.)
+stow **directory**

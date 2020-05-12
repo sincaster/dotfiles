@@ -15,6 +15,6 @@ stow [some_directory]
 # Disclaimer
 Some directories like suckless_dmenu are not installed this way.
 Take a look at the README file in that directory.
-![cock](cool_pic.png)
+![cock]./(cool_pic.png)
 
 (the wallpaper is in https://github.com/sincaster/Wallpapers)

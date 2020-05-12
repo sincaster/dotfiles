@@ -1,12 +1,20 @@
-notthebee's dotfiles
---------------------
+# a fork of notthebee's dotfiles
+|---------------------------------
 
 Uses GNU Stow – https://www.gnu.org/software/stow/
-You can install it with your package manager (E.g. apt, pacman, dnf, yum, GNU Guix)
+You can install it with your package manager
 
 # "Installation" for newbies
-Usage: 
-cd **your preferred directory**
-git clone https://github.com/sincaster/dotfiles (or https://github.com/sincaster/dotfiles.git)
+
+```
+git clone https://github.com/sincaster/dotfiles
 cd dotfiles
-stow **directory**
+stow [some_directory]
+```
+
+# Disclaimer
+Some directories like suckless_dmenu are not installed this way.
+Take a look at the README file in that directory.
+[cock](cool_pic.png)
+
+(the wallpaper is in https://github.com/sincaster/Wallpapers)

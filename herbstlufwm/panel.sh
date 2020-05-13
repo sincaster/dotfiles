@@ -17,11 +17,16 @@ fi
 x=${geometry[0]}
 y=${geometry[1]}
 panel_width=${geometry[2]}
-panel_height=16
+panel_height=22
+
+#font="-*-fixed-medium-*-*-*-12-*-*-*-*-*-*-*"
 font="-*-fixed-medium-*-*-*-12-*-*-*-*-*-*-*"
+
 bgcolor=$(hc get frame_border_normal_color)
 selbg=$(hc get window_border_active_color)
-selfg='#101010'
+selfg='#ff7ea3'
+
+bruh='#9fbc00'
 
 ####
 # Try to find textwidth binary.
@@ -30,8 +35,6 @@ if which textwidth &> /dev/null ; then
     textwidth="textwidth";
 elif which dzen2-textwidth &> /dev/null ; then
     textwidth="dzen2-textwidth";
-elif which xftwidth &> /dev/null ; then # For guix
-    textwidth="xtfwidth";
 else
     echo "This script requires the textwidth tool of the dzen2 project."
     exit 1
@@ -73,7 +76,7 @@ hc pad $monitor $panel_height
     while true ; do
         # "date" output is checked once a second, but an event is only
         # generated if the output changed compared to the previous run.
-        date +$'date\t^fg(#efefef)%H:%M^fg(#909090), %Y-%m-^fg(#efefef)%d'
+        date +$'date\t^fg(#ffa500)%H:%M^fg(#909090), %Y-%m-^fg(#853385)%d'
         sleep 1 || break
     done > >(uniq_linebuffered) &
     childpid=$!
@@ -95,7 +98,7 @@ hc pad $monitor $panel_height
         for i in "${tags[@]}" ; do
             case ${i:0:1} in
                 '#')
-                    echo -n "^bg($selbg)^fg($selfg)"
+                    echo -n "^bg($bruh)^fg($selfg)"
                     ;;
                 '+')
                     echo -n "^bg(#9CA668)^fg(#141414)"
@@ -107,7 +110,7 @@ hc pad $monitor $panel_height
                     echo -n "^bg(#FF0675)^fg(#141414)"
                     ;;
                 *)
-                    echo -n "^bg()^fg(#ababab)"
+                    echo -n "^bg()^fg(#545454)"
                     ;;
             esac
             if [ ! -z "$dzen2_svn" ] ; then

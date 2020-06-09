@@ -1,0 +1,49 @@
+# term
+alt + Return
+	st
+
+# web
+alt + b
+	firefox
+
+# dmenu
+alt + d
+	dmenu_run
+
+# rofi etc.
+alt + x
+	rofi_run -l
+
+# kill
+alt + q
+	bspc node -k
+
+# focus
+alt + {h,j,k,l}
+        bspc node -f {west,south,north,east}
+
+# resize
+alt + shift + {h,j,k,l}
+	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# volume 
+## mute the audio
+XF86AudioMute
+     pamixer -t
+
+## raise the volume
+XF86AudioRaiseVolume
+     pamixer -i 2
+
+## lower the volume
+XF86AudioLowerVolume
+     pamixer -d 2
+
+## move the brightness up 
+XF86MonBrightnessUp
+     xbacklight +10
+
+## and down
+XF86MonBrightnessDown
+     xbacklight -10
+

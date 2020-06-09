@@ -1,22 +1,22 @@
 #!/bin/sh
 
 # set root pointer
-xsetroot -cursor_name left_ptr
+#xsetroot -cursor_name left_ptr
 
 # key bindings
 sxhkd &
 
 # wallpaper
-nitrogen --restore &
+#nitrogen --restore &
 
 # launch compton
-al-compositor --start &
+#al-compositor --start &
 
 # xfce settings
-xfsettingsd &
+#xfsettingsd &
 
 # panel
-al-polybar-session &
+#al-polybar-session &
 
 # Set some bsp specific stuff
 bspc monitor -d I II III IV V VI VII VIII IX X
@@ -37,8 +37,4 @@ bspc config pointer_modifier mod1
 bspc config click_to_focus true
 bspc config pointer_action1 move
 bspc config pointer_action2 resize_side
-bspc config pointer_action3 resize_corner
-
-bspc rule -a thunar desktop='^1' state=floating follow=on
-bspc rule -a firefox desktop='^2'
-bspc rule -a st desktop='^9'
+bspc config pointer_action3 resize_corner 

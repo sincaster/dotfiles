@@ -22,7 +22,8 @@ hc keybind $Mod-Shift-q quit
 hc keybind $Mod-Shift-r reload
 hc keybind $Mod-Shift-c close
 hc keybind $Mod-Return spawn ${TERMINAL:-st} 
-hc keybind $Mod-d spawn ${DMENU:-dmenu_run_hlwm}
+hc keybind $Mod-d spawn ${DMENU:-dmenu_run}
+hc keybind $Mod-b spawn ${BROWSER:-firefox}
 
 # basic movement
 # focusing clients
@@ -168,9 +169,8 @@ for monitor in $(herbstclient list_monitors | cut -d: -f1) ; do
     "$panel" $monitor &
 done
 
-while true
-do
-	chameleon --iterative ~/Downloads/wallpapers/
-	sleep 300 
-done
-
+#while true
+#do
+#	feh --bg-fill ~/Downloads/wallpapers
+#	sleep 300
+#done

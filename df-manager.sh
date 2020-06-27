@@ -46,6 +46,8 @@ case $picker in
             printf "[ERROR]\n"
         fi
 
+        # check if the config files
+        # were copied correctly
         if [ -f $HPANEL ]; then
             printf "[OK]\n"
         else
@@ -66,7 +68,7 @@ case $picker in
         if [ ! -d $WAYBARDIR ]; then
             printf "DIRECTORY $WAYBARDIR DOES NOT EXIST! MAKING ONE...\n"
         elif [ -d $WAYBAR ]; then
-            printf "Directory exists, copying files...\n" && mkdir ~/.config/waybar ; cp waybar/* $WAYBARDIR
+            printf "Directory exists, copying files...\n" && cp $PWD/waybar/* $WAYBARDIR
         fi
 
         # define some stuff
@@ -79,9 +81,44 @@ case $picker in
         else ! cmp $PWD/waybar/style.css $WAYBARCSS
         fi
 
+        # check if the config files
+        # were copied correctly
+        if [ -f $WAYBARCONF ]; then
+            printf "[OK]\n"
+        else
+            printf "[ERROR]\n"
+        fi
+
+        if [ -f $WAYBARCSS ]; then
+            printf "[OK]\n"
+        else
+            printf "[ERROR]\n"
+        fi
+
         ;;
 
+    *ksh*)
 
+        if [ ! -d ~/.kshrc ]; then
+            cp $PWD/ksh/.kshrc ~/.kshrc
+
+        elif ! cmp $PWD/ksh/.kshrc ~/.kshrc; then
+            printf "File exists, overwriting...\n" && cp $PWD/ksh/.kshrc ~/.kshrc
+        fi
+
+        if [ -f ~/.kshrc ]; then
+            printf "[OK]"
+        else
+            printf "[ERROR]"
+        fi
+
+        ;;
+
+    #*bspwm*)
+
+#        if [ ! -d ~/.config/bspwm ]
+
+   
 esac
 
  ####################

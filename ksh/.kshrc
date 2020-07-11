@@ -112,10 +112,6 @@ PathShort="\w"
 PathFull="\W"
 NewLine="\n"
 Jobs="\j"
-PS1="$(echo -e "\033[1;95m\tλ \033[34m")"
+PS1="$(echo -e "\033[1;95mksh λ \033[34m")"
 
-# David
-pfetch | lolcat
-set -o emacs
-. '/home/limo/git/pfetch/promptless.sh'
-
+set -o emacs 

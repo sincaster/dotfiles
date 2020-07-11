@@ -128,12 +128,12 @@ esac
 while getopts h:-help opts; do
     case "${opts}"
          in
-              h) echo echo         "df-manager.sh
+              h) echo          "df-manager.sh
 
 df-manager.sh is a shell (sh) script
 that manages your dotfiles or my dotfiles
 
-EXAMPLE: sh df-manager.sh (in the directory of the script)
+EXAMPLE: $PS1 sh df-manager.sh (in the directory of the script)
 ~> herbstluftwm
 
 [OK]
@@ -141,7 +141,7 @@ EXAMPLE: sh df-manager.sh (in the directory of the script)
 [OK]
 (^^ info messages)
 
-It currently works only on herbstluftwm"
+It currently works only on herbstluftwm, waybar and on ksh"
 ;;
               -help) echo "mars";;
     esac

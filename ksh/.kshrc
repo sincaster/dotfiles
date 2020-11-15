@@ -1,4 +1,4 @@
-export EDITOR=nvim 
+export EDITOR=emacs
 export PATH=$HOME/.local/bin:/opt/chromium:/usr/local/bin:/home/limo/git/nfu/build/:$PATH
 export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
@@ -29,7 +29,20 @@ alias sudo='sudo '
 alias pkg='vpm --color=no'
 alias ipp='curl ipinfo.io/ip'
 alias mixer='ncpamixer'
+
+# nix stuff
+## for ibhagwan's picom build
+### URL: https://github.com/ibhagwan/picom
+alias picombuild='nix-shell -p xorg.libX11 xorg.libXcomposite xorg.libXinerama xorg.libXpresent xorg.libXrandr xorg.libXrender xorg.libxcb xorg.libXdamage xorg.libXfixes pixman libev uthash xorg.xcbutilrenderutil xorg.xcbutilimage xorg.libXext'
+# functions
+## stuff for kitty
+kimg()
+{
+    kitty +kitten icat "$@"
+}
+
 #alias ls="dir"
+
 # PS1
 
 # Reset
@@ -112,6 +125,6 @@ PathShort="\w"
 PathFull="\W"
 NewLine="\n"
 Jobs="\j"
-PS1="$(echo -e "\033[1;95mksh λ \033[34m")"
+PS1="$(echo -e "\033[1;93m  ksh \033[1;95mλ \033[37m")"
 
 set -o emacs 

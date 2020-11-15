@@ -1,19 +1,9 @@
 # a fork of notthebee's dotfiles
 |---------------------------------
 
-Uses GNU Stow – https://www.gnu.org/software/stow/
-You can install it with your package manager
-
-# "Installation" for newbies
+INSTALLATION
+Use my script.
 
 ```
-git clone https://github.com/sincaster/dotfiles
-cd dotfiles
-stow [some_directory]
+sh df-manager.sh
 ```
-
-# Disclaimer
-Some directories like suckless_dmenu are not installed this way.
-Take a look at the README file in that directory.
-
-(the wallpaper for cool_pic.png is in https://github.com/sincaster/Wallpapers)

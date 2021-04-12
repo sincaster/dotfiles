@@ -1,0 +1,25 @@
+*.background: #262626
+*.foreground: #875F5F
+
+*.color0: #262626
+*.color1: #D75F00
+*.color2: #5FAF5F
+*.color3: #D78787
+*.color4: #878700
+*.color5: #D78700
+*.color6: #5F8787
+*.color7: #AF8787
+
+*.color8: #875F5F
+*.color9: #D75F00
+*.color10: #5FAF5F
+*.color11: #D78787
+*.color12: #878700
+*.color13: #D78700
+*.color14: #5F8787
+*.color15: #AF8787
+
+URxvt.scrollBar: false
+
+URxvt.font: -misc-fixed-medium-o-normal-*-13-120-75-75-c-80-iso8859-1
+URxvt.boldFont: -misc-fixed-medium-o-normal-*-13-120-75-75-c-80-iso8859-1

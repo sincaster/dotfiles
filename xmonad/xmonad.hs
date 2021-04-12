@@ -9,51 +9,28 @@
 
 -- import XMonad
 
-{--
--- hooks
-import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.EwmhDesktops(ewmh)
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.ManageHelpers
-
--- utils
-import XMonad.Util.SpawnOnce
-import XMonad.Util.Run(spawnPipe)
-
--- layouts
-import XMonad.Layout.Spacing
-import XMonad.Layout.NoBorders
-import XMonad.Layout.Fullscreen
-
--- others
-import Data.Monoid
-import System.Exit
-
--- import XMonad.Prompt
-import XMonad.Prompt.Shell
-
--- import XMonad.Config.Desktop
--- import Control.Arrow(first)
-
-import qualified XMonad.StackSet as W
-import qualified Data.Map        as M
---}
-
 -- base
 import System.IO
 import System.Exit
 import XMonad
 
 -- hooks
+import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops(ewmh)
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 
 -- layouts
 import XMonad.Layout.NoBorders
+import XMonad.Layout.Gaps
 import XMonad.Layout.Spacing
-import XMonad.Hooks.DynamicLog
 import XMonad.Layout.Fullscreen
+import XMonad.Layout.Accordion
+--import XMonad.Layout.NoBorders
+
+-- actions
+import XMonad.Actions.Warp
+import XMonad.Actions.FloatKeys
 
 -- prompt
 -- import XMonad.Prompt
@@ -62,6 +39,12 @@ import XMonad.Layout.Fullscreen
 -- utils
 import XMonad.Util.EZConfig(additionalKeys)
 import XMonad.Util.Run
+
+-- prompt
+import XMonad.Prompt
+import XMonad.Prompt.Ssh
+
+import XMonad.Prompt.XMonad
 
 import Data.Char(isSpace)
 
@@ -72,8 +55,8 @@ import qualified Data.Map        as M
 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
---
-myTerminal      = "kitty"
+myTerminal :: String
+myTerminal = "uxterm -fn -misc-fixed-bold-r-normal--15------iso8859-15"
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -84,8 +67,8 @@ myClickJustFocuses :: Bool
 myClickJustFocuses = True
 
 -- Width of the window border in pixels.
---
-myBorderWidth   = 6
+myBorderWidth :: Dimension
+myBorderWidth   = 4
 
 -- modMask lets you specify which modkey you want to use. The default
 -- is mod1Mask ("left alt").  You may also consider using mod3Mask
@@ -102,13 +85,31 @@ myModMask       = mod4Mask
 -- A tagging example:
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
---
+
 myWorkspaces    = ["one","two","three","four","five","six","seven","eight","nine"] ++ map show [1..9]
 
 -- Border colors for unfocused and focused windows, respectively.
---
+
+myNormalBorderColor  :: String
+myFocusedBorderColor :: String
+
+myNormalBorderColor   = "#1a1a1a"
+myFocusedBorderColor = "#ffffff"
+
+-- Gruvbox
+
+{-
 myNormalBorderColor  = "#000000"
 myFocusedBorderColor = "#FFFFD7"
+-}
+
+-- Solarized
+
+{-
+myNormalBorderColor  = "#586e75" 
+myFocusedBorderColor = "#073642"
+-}
+
 
 -----------------------------------------------------------------------
 -----------------------------------------------------------------------
@@ -121,7 +122,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 
     -- launch dmenu
-    , ((modm,               xK_p     ), spawn "dmenu_run")
+    , ((modm,               xK_p     ), spawn "dmenu_run"),
+    
+    -- Promp for running "xmonad commads"
+    ((modm, xK_d), xmonadPrompt def)
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
@@ -135,11 +139,24 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Resize viewed windows to the correct size
     , ((modm,               xK_n     ), refresh)
 
+    -- resize floating windows
+    , ((modm, xK_y), withFocused (keysResizeWindow ( 15, 0) (1, 1)))
+    , ((modm, xK_u), withFocused (keysResizeWindow (0,  15) (1, 1)))
+    , ((modm, xK_i),  withFocused  (keysResizeWindow (0,  -15) (1, 1)))
+    , ((modm, xK_o), withFocused (keysResizeWindow (-15, 0) (1, 1)))
+    
+    -- ssh prompt
+    , ((modm, xK_s), sshPrompt def)
+    
     -- Move focus to the next window
-    , ((modm,               xK_Tab   ), windows W.focusDown)
-
+    , ((modm,               xK_Tab   ), sequence_ [windows W.focusDown, warpToWindow (1 / 2) (1 / 2)]),
+    -- Move mouse pointer to the center of the window
+    --((modm, xK_Tab), ), warpToWindow (1 / 2) (1 / 2)
+    
+    -- Swap the focused window with the next window
+    ((modm .|. shiftMask, xK_j), windows W.swapDown ),
     -- Move focus to the next window
-    , ((modm,               xK_j     ), windows W.focusDown)
+    ((modm, xK_j), windows W.focusDown)
 
     -- Move focus to the previous window
     , ((modm,               xK_k     ), windows W.focusUp  )
@@ -150,15 +167,13 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Swap the focused window and the master window
     , ((modm,               xK_Return), windows W.swapMaster)
 
-    -- Swap the focused window with the next window
-    , ((modm .|. shiftMask, xK_j     ), windows W.swapDown  )
 
     -- Swap the focused window with the previous window
     , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    )
 
     -- Shrink the master area
     , ((modm,               xK_h     ), sendMessage Shrink)
-
+    
     -- Expand the master area
     , ((modm,               xK_l     ), sendMessage Expand)
 
@@ -189,7 +204,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_q     ), spawn "pkill lemonbar; pkill picom; xmonad --recompile; xmonad --restart")
 
     -- Run xmessage with a summary of the default keybindings (useful for beginners)
-    , ((modm .|. shiftMask, xK_slash ), spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
+--    , ((modm .|. shiftMask, xK_slash ), spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
     ]
     ++
 
@@ -241,9 +256,11 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = avoidStruts $ spacing 6 $ Tall 1 (3/100) (1/2)
+-- myLayout = avoidStruts $ spacing 16 $ Tall 1 (5/100) (1/2)
 -- myLayout = avoidStruts(tiled ||| Full)
-  
+
+--myLayout = Tall nmaster delta ratio ||| noBorders(Full)
+myLayout = gaps [(U,55), (D,25), (R,25), (L,25)] $ spacing 10 $ avoidStruts $ tiled ||| Full ||| Accordion
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = Tall nmaster delta ratio
@@ -289,8 +306,7 @@ myManageHook = fullscreenManageHook
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
-myEventHook = fullscreenEventHook
-
+myEventHook = fullscreenEventHook 
 ------------------------------------------------------------------------
 -- Status bars and logging
 
@@ -315,20 +331,19 @@ myStartupHook = return()
 -- Now run xmonad with all the defaults we set up.
 
 -- Run xmonad with the settings you specify. No need to modify this.
---
+-- 
 main = do
-  xmproc <- spawnPipe "dash ~/git/dotfiles/lemonbar/bar1.sh | lemonbar -p -f unscii -g250x30"
-  xmproc <- spawnPipe "feh --bg-fill ~/Downloads/wallpapers/modern-architecture-wallpaper.jpg"
+  xmproc <- spawnPipe "dash ~/git/dotfiles/lemonbar/bar.sh | lemonbar -p -f unscii -g180x30"
+  xmproc <- spawnPipe "feh --bg-fill ~/git/wallpapers/lake.jpg"
   xmproc <- spawnPipe "xsetroot -cursor_name star"
-  xmproc <- spawnPipe "picom"
+--  xmproc <- spawnPipe "picom"
   xmonad $ docks $ fullscreenSupport $ ewmh defaults
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
 -- use the defaults defined in xmonad/XMonad/Config.hs
---
+
 -- No need to modify this.
---
 defaults = def {
       -- simple stuff
         terminal           = myTerminal,
@@ -353,6 +368,7 @@ defaults = def {
     }
 
 -- | Finally, a copy of the default bindings in simple textual tabular format.
+{-
 help :: String
 help = unlines ["The default modifier key is 'alt'. Default keybindings:",
     "",
@@ -402,3 +418,4 @@ help = unlines ["The default modifier key is 'alt'. Default keybindings:",
     "mod-button1  Set the window to floating mode and move by dragging",
     "mod-button2  Raise the window to the top of the stack",
     "mod-button3  Set the window to floating mode and resize by dragging"]
+-}
